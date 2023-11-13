@@ -11,16 +11,17 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $fields = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|confirmed'
         ]);
 
         $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password'])
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -35,7 +36,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $fields = $request->validate([
-            'email' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string'
         ]);
 
@@ -61,8 +62,8 @@ class AuthController extends Controller
     {
         auth()->user()->tokens()->delete();
 
-        return [
+        return response([
             'message' => 'Logged Out'
-        ];
+        ], 201);
     }
 }
