@@ -25,16 +25,19 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::get('/products/search/{name}', [ProductController::class, 'search']);
 
-// Route::get('/user/{id}', [UserController::class, 'show']);
+
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::group(['middleware' => ['restrict:admin']], function () {
+        Route::post('/admin/logout', [AuthController::class, 'logout']);
+        Route::get('/admin/users', [UserController::class, 'index']);
+        Route::get('/admin/user/{id}', [UserController::class, 'show']);
+    });
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/admin/logout', [AuthController::class, 'logout'])->middleware('restrict:admin');
     Route::post('/product', [ProductController::class, 'store']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
-    Route::get('/admin/users', [UserController::class, 'index'])->middleware('restrict:admin');
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
