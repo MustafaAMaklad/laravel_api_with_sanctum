@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -45,20 +46,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
     /**
      * The attributes that should be appended.
      *
      * @var array<int, string>
      */
-    protected $appends = [
-        'full_name'
-    ];
-
-    protected function fullName() : Attribute
+    public function client(): HasOne
     {
-        return Attribute::make(
-            get: fn () => $this->first_name . ' ' . $this->last_name,
-        );
+        return $this->hasOne(Client::class);
+    }
+    public function store(): HasOne
+    {
+        return $this->hasOne(Store::class);
     }
 }
