@@ -17,15 +17,15 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'first_name' => 'User',
-            'last_name'=> 'Admin',
-            'email' => 'user@admin.com',
+            'email' => 'mustafa@admin.com',
+            'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'role' => 'admin',
         ]);
-        // Admin::create([
-        //     'first_name' => 'mustafa',
-        //     'last_name' => 'aly'
-        // ]);
+        Admin::create([
+            'first_name' => 'mustafa',
+            'last_name' => 'aly',
+            'user_id' => 1,
+        ]);
     }
 }

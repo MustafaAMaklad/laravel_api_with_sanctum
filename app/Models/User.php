@@ -45,11 +45,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    
+    /**
+     * The attributes that should be appended.
+     *
+     * @var array<int, string>
+     */
     protected $appends = [
         'full_name'
     ];
-    
+
     protected function fullName() : Attribute
     {
         return Attribute::make(
