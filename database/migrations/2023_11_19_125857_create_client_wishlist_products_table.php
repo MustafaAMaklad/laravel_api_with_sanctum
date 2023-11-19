@@ -11,14 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_copon_uses', function (Blueprint $table) {
+        Schema::create('client_wishlist_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')
                 ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger('copon_id');
-            $table->foreign('copon_id')->references('id')->on('copons')
+
+            $table->unsignedBigInteger('wishlist_id');
+            $table->foreign('wishlist_id')->references('id')->on('wishlists')
                 ->cascadeOnDelete()->cascadeOnUpdate();
+
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')
+                ->cascadeOnDelete()->cascadeOnUpdate();
+
+
+
             $table->timestamps();
         });
     }
@@ -28,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_copon_uses');
+        Schema::dropIfExists('client_wishlist_products');
     }
 };
