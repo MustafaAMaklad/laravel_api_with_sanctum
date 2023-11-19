@@ -25,13 +25,13 @@ class Client extends Model
     {
         return $this->hasOne(Wishlist::class);
     }
+    public function city(): HasOne
+    {
+        return $this->hasOne(City::class);
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-    public function city(): BelongsTo
-    {
-        return $this->belongsTo(City::class);
     }
     protected function fullName(): Attribute
     {
