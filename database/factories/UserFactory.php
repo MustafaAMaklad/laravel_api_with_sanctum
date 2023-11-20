@@ -2,9 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
+use App\Models\Client;
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -21,14 +25,30 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'role' => ['client', 'store'][rand(0, 1)],
+            'city_id' => City::inRandomOrder()->value('id'),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }
-
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $id = $user->id;
+            $role = $user->role;
+            if ($role === 'client') {
+                Client::factory()->createOne(['user_id' => $id]);
+            }
+            if ($role === 'store') {
+                // Todo
+            }
+        });
+    }
     /**
      * Indicate that the model's email address should be unverified.
      */
