@@ -8,6 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin;
+use App\Models\City;
 
 class AdminSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'role' => 'admin',
+            'city_id' => City::where('city_name', 'cairo')->value('id'),
         ]);
     }
 }
