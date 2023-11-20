@@ -16,12 +16,16 @@ class Store
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if (!$user || $user->role !== 'user') {
+        if (!$user || $user->role !== 'store') {
             return response()->json(['message' => 'Unauthorized'], 403);
 
             if ($user->status === 'blocked') {
                 return response()->json(['message'=> 'Your account is currently blocked'], 403);
             }
+            if ($user->status === 'pending') {
+                return response()->json(['message'=> 'Your account is currently pending, contact the admin to activate your account'], 403);
+            }
+
         }
         return $next($request);
     }
