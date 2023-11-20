@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-            $table->unsignedBigInteger('city_id')->unique();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('city_id')->nullable(false);
             $table->foreign('city_id')->references('id')->on('cities');
         });
     }
@@ -22,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('stores', function (Blueprint $table) {
-            $table->dropColumn('city_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['city_id']);
+            $table->dropColumn(['city_id']);
         });
     }
 };

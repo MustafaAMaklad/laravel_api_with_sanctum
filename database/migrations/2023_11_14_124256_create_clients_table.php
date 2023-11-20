@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('first_name')->nullable(false);
             $table->string('last_name')->nullable(false);
             $table->enum('status', ['active', 'blocked'])->default('active');
-            $table->unsignedBigInteger('city_id')->unique();
-            $table->foreign('city_id')->references('id')->on('cities');
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnDelete()->cascadeOnUpdate();
