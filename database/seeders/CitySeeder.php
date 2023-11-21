@@ -13,7 +13,7 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
-        $citiesNames = ['cairo', 'alexandria', 'mdbansoura'];
+        $citiesNames = ['cairo', 'alexandria', 'mansoura'];
 
         foreach ($citiesNames as $cityName) {
             City::create([
