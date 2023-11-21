@@ -27,7 +27,6 @@ class UserFactory extends Factory
         return [
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'role' => ['client', 'store'][rand(0, 1)],
             'city_id' => City::inRandomOrder()->value('id'),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -45,7 +44,7 @@ class UserFactory extends Factory
                 Client::factory()->createOne(['user_id' => $id]);
             }
             if ($role === 'store') {
-                // Todo
+                Store::factory()->createOne(['user_id' => $id]);
             }
         });
     }
