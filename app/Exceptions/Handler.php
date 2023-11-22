@@ -36,7 +36,17 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
 
-            return response()->json(['status' => false, 'data' => null, 'message' => 'Id not found'], 404);
+            return response()->json([
+                'status' => false,
+                'data' => null, 'message' => 'Id not found'
+            ], 404);
+        }
+        if ($e instanceof InvalidRoleActionException) {
+
+            return response()->json([
+                'status' => false,
+                'data' => null, 'message' => 'You can not perform this action on the requested role'
+            ], 403);
         }
 
         return parent::render($request, $e);
