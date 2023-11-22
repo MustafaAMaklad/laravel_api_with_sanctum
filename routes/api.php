@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -18,27 +19,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/client/register', [AuthController::class, 'register']);
+Route::post('/store/register', [AuthController::class, 'register']);
 Route::post('/admin/login', [AuthController::class, 'login']);
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/product/{id}', [ProductController::class, 'show']);
-Route::get('/products/search/{name}', [ProductController::class, 'search']);
-
-
+Route::post('/client/login', [AuthController::class, 'login']);
+Route::post('/store/login', [AuthController::class, 'login']);
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::group(['middleware' => ['restrict:admin']], function () {
+    Route::group(['middleware' => ['admin']], function () {
         Route::post('/admin/logout', [AuthController::class, 'logout']);
-        Route::get('/admin/users', [UserController::class, 'index']);
-        Route::get('/admin/user/{id}', [UserController::class, 'show']);
+        Route::post('/admin/activate/account/{id}', [AdminController::class, 'activate']);
+        Route::post('/admin/block/account/{id}', [AdminController::class, 'block']);
+        Route::get('/admin/show/users', [UserController::class, 'index']);
+        Route::get('/admin/show/user/{id}', [UserController::class, 'show']);
     });
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/product', [ProductController::class, 'store']);
-    Route::put('/product/{id}', [ProductController::class, 'update']);
-    Route::delete('/product/{id}', [ProductController::class, 'destroy']);
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::group(['middleware' => ['store']], function () {
+        Route::post('/store/logout', [AuthController::class, 'logout']);
+    });
+    Route::group(['middleware' => ['client']], function () {
+        Route::post('/client/logout', [AuthController::class, 'logout']);
+    });
 });
