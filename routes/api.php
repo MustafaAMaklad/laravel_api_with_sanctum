@@ -29,8 +29,7 @@ Route::post('/store/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['admin']], function () {
         Route::post('/admin/logout', [AuthController::class, 'logout']);
-        Route::post('/admin/activate/account/{id}', [AdminController::class, 'activate']);
-        Route::post('/admin/block/account/{id}', [AdminController::class, 'block']);
+        Route::put('/admin/account/status', [AdminController::class, 'updateAccountStatus']);
         Route::get('/admin/show/users', [UserController::class, 'index']);
         Route::get('/admin/show/user/{id}', [UserController::class, 'show']);
     });
