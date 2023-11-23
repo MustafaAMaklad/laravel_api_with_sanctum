@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidRoleActionException extends Exception
+class InvalidUserRoleException extends Exception
 {
     //
 }

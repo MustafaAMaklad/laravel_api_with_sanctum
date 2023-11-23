@@ -41,12 +41,12 @@ class Handler extends ExceptionHandler
                 'data' => null, 'message' => 'Id not found'
             ], 404);
         }
-        if ($e instanceof InvalidRoleActionException) {
+        if ($e instanceof InvalidUserRoleException) {
 
             return response()->json([
                 'status' => false,
-                'data' => null, 'message' => 'You can not perform this action on the requested role'
-            ], 403);
+                'data' => null, 'message' => 'You can not perform this action on users of this role'
+            ], 422);
         }
 
         return parent::render($request, $e);
