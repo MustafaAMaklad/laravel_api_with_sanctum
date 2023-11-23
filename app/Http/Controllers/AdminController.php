@@ -2,73 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\InvalidRoleActionException;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Client;
-use App\Models\Store;
+use App\Helpers\UserHelper;
 
 class AdminController extends Controller
 {
-    public function activate(string $id)
+    public function updateAccountStatus(Request $request)
     {
-        $user = $this->user($id);
+        $request->validate([
+            'id' => 'required',
+            'status' => 'required|in:active,blocked'
+        ]);
 
-        if ($user->status === 'blocked' || $user->status === 'pending') {
-            $user->status = 'active';
-            $user->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Account was activated successfully'
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Account is already activated'
-            ], 200);
+        if ($request->status === 'active') {
+            return $this->setAccounttatus($request->id, 'active');
+        }
+        if ($request->status === 'blocked') {
+            return $this->setAccounttatus($request->id, 'blocked');
         }
     }
-    public function block(string $id)
+    private function setAccounttatus(string $id, string $status)
     {
-        $user = $this->user($id);
-        
-        if ($user->status === 'active') {
-            $user->status = 'blocked';
-            $user->save();
+        $user = UserHelper::getUserForRole($id);
+
+        if ($user->status === $status) {
 
             return response()->json([
-                'status' => true,
-                'message' => 'Account was blocked successfully'
-            ], 200);
-        }
-        if ($user->status === 'pending') {
+                'status' => false,
+                'message' => 'Account is already ' . $status
+            ], 422);
+        } else if ($user->status === 'pending' && $status === 'blocked') {
 
             return response()->json([
                 'status' => false,
                 'message' => 'Account is currently pending'
-            ], 200);
-        }
-        if ($user->status === 'blocked') {
+            ], 422);
+        } else {
+            $user->status = $status;
+            $user->save();
 
             return response()->json([
-                'status' => false,
-                'message' => 'Account is already blocked'
+                'status' => true,
+                'message' => 'Account\'s status was set to ' . $status . ' successfully'
             ], 200);
         }
-    }
-    protected function user(string $id)
-    {
-        $role = User::where('id', $id)->firstOrFail()->role;
-        if ($role === 'client') {
-            $user = Client::where('user_id', $id)->firstOrFail();
-            return $user;
-        }
-        if ($role === 'store') {
-            $user = Store::where('user_id', $id)->firstOrFail();
-            return $user;
-        }
-
-        throw new InvalidRoleActionException;
     }
 }
