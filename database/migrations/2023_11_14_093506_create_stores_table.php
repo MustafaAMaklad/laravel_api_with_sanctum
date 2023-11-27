@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(false)->unique();
-            $table->enum('status', ['pending', 'active', 'blocked'])->default('pending');
-            $table->string('commercial_number', 11)->nullable(false)->unique();
+            $table->string('commercial_number', 13)->nullable(false)->unique();
             $table->string('commercial_id', 20)->nullable(false)->unique();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')

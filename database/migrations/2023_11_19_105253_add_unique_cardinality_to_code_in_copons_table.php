@@ -23,7 +23,6 @@ return new class extends Migration
     {
         Schema::table('copons', function (Blueprint $table) {
             $table->string('code')->nullable(false)->change();
-            //
         });
     }
 };

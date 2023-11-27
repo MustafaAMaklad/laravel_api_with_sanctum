@@ -17,7 +17,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile_image')->default('https://www.w3schools.com/howto/img_avatar.png');
-            $table->enum('role', ['admin', 'client', 'store'])->default('client');
+            $table->enum('role', ['admin', 'client', 'store'])->nullable(false);
+            $table->enum('status', ['pending', 'active', 'blocked'])->nullable(false);
             $table->rememberToken();
             $table->timestamps();
         });
