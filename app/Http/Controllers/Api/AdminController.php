@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\UserHelper;
+use App\Models\User;
+use App\Models\Client;
+use App\Models\Store;
 
 class AdminController extends Controller
 {
@@ -45,6 +49,25 @@ class AdminController extends Controller
                 'status' => true,
                 'message' => 'Account\'s status was set to ' . $status . ' successfully'
             ], 200);
+        }
+    }
+
+    public function showUsers(Request $request)
+    {
+        $request->validate([
+            'status' => 'in:active,blocked,pending',
+            'role' => 'in:client,store'
+        ]);
+        $filters = $request->query();
+        if (!$filters) {
+
+            return response()->json([
+                'status' => true,
+                'data' => User::where('role', 'client')->orWhere('role', 'store')->get()
+            ]);
+        } else {
+
+            return UserHelper::filterUsers($filters);
         }
     }
 }

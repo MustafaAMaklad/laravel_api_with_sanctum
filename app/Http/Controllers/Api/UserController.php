@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Attribute;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::findOrFail($id);
-        
+
         return response()->json([
             'status' => true,
             'user' => $user,
