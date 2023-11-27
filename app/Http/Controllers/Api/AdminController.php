@@ -18,16 +18,8 @@ class AdminController extends Controller
             'status' => 'required|in:active,blocked'
         ]);
 
-        if ($request->status === 'active') {
-            return $this->setAccounttatus($request->id, 'active');
-        }
-        if ($request->status === 'blocked') {
-            return $this->setAccounttatus($request->id, 'blocked');
-        }
-    }
-    private function setAccounttatus(string $id, string $status)
-    {
-        $user = UserHelper::getUserForRole($id);
+        $user = User::where('id', $request->id)->firstOrfail();
+        $status = $request->status;
 
         if ($user->status === $status) {
 
@@ -58,16 +50,38 @@ class AdminController extends Controller
             'status' => 'in:active,blocked,pending',
             'role' => 'in:client,store'
         ]);
-        $filters = $request->query();
-        if (!$filters) {
+
+        if (!$request->query()) {
+            $clients = Client::with('user')->get();
+            $stores = Store::with('user')->get();
 
             return response()->json([
                 'status' => true,
-                'data' => User::where('role', 'client')->orWhere('role', 'store')->get()
+                'data' => [
+                    'clients' => $clients,
+                    'stores' => $stores
+                ]
             ]);
         } else {
+            $query = User::query();
+            foreach ($request->query() as $key => $value) {
+                $query->where($key, $value);
+            }
 
-            return UserHelper::filterUsers($filters);
+            $users = $query->get(['id', 'role']);
+            $data = [];
+            foreach ($users as $user) {
+                if ($user->role === 'client') {
+                    $data[] = Client::with('user')->where('user_id', $user->id)->get();
+                } else {
+                    $data[] = Store::with('user')->where('user_id', $user->id)->get();
+                }
+            }
+
+            return response()->json([
+                'status' => true,
+                'data' => $data
+            ]);
         }
     }
 }
