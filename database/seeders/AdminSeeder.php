@@ -22,7 +22,8 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('password'),
             'role' => 'admin',
-            'city_id' => City::where('city_name', 'cairo')->value('id'),
+            'status' => 'active',
+            'city_id' => City::where('id', 1)->value('id'),
         ]);
     }
 }

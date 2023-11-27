@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()->count(20)->state(new Sequence(
-            ['role' => 'client'],
-            ['role' => 'store']
+            ['role' => 'client', 'status' => 'active'],
+            ['role' => 'store', 'status' => 'pending']
         ))->create();
     }
 }
