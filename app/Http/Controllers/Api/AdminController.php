@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Helpers\UserHelper;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Store;
@@ -14,7 +14,7 @@ class AdminController extends Controller
     public function updateAccountStatus(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'id' => 'required', // add rule to check if exists
             'status' => 'required|in:active,blocked'
         ]);
 
@@ -48,7 +48,9 @@ class AdminController extends Controller
     {
         $request->validate([
             'status' => 'in:active,blocked,pending',
-            'role' => 'in:client,store'
+            'role' => 'in:client,store',
+            'sortbyname' => 'in:1,0',
+            'sortbydate' => 'in:1,0'
         ]);
 
         if (!$request->query()) {
@@ -64,23 +66,44 @@ class AdminController extends Controller
             ]);
         } else {
             $query = User::query();
-            foreach ($request->query() as $key => $value) {
-                $query->where($key, $value);
-            }
 
-            $users = $query->get(['id', 'role']);
-            $data = [];
-            foreach ($users as $user) {
-                if ($user->role === 'client') {
-                    $data[] = Client::with('user')->where('user_id', $user->id)->get();
-                } else {
-                    $data[] = Store::with('user')->where('user_id', $user->id)->get();
+            foreach ($request->query() as $key => $value) {
+                if ($key === 'status' || $key === 'role') {
+                    $query->where($key, $value);
                 }
             }
 
+            $ids = $query->pluck('id')->values()->toArray();
+
+            $clients = Client::with('user')->whereIn('user_id', $ids);
+            $stores = Store::with('user')->whereIn('user_id', $ids);
+
+            if (isset($request->query()['sortbyname'])) {
+                if ($request->query()['sortbyname'] === '0') {
+                    $clients->orderBy('first_name', 'desc');
+                    $stores->orderBy('name', 'desc');
+                } else {
+                    $clients->orderBy('first_name', 'asc');
+                    $stores->orderBy('name', 'asc');
+                }
+            }
+            if (isset($request->query()['sortbydate'])) {
+                if ($request->query()['sortbydate'] === '0') {
+                    $clients->orderBy('created_at', 'desc');
+                    $stores->orderBy('created_at', 'desc');
+                } else {
+                    $clients->orderBy('created_at', 'asc');
+                    $stores->orderBy('created_at', 'asc');
+                }
+            }
+
+
             return response()->json([
                 'status' => true,
-                'data' => $data
+                'data' => [
+                    'clients' => $clients->get(),
+                    'stores' => $stores->get()
+                ]
             ]);
         }
     }

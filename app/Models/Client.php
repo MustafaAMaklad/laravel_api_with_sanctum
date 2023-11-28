@@ -14,17 +14,8 @@ class Client extends Model
 
 
     protected $appends = [
-        'full_name'
+        'full_name',
     ];
-
-    public function cart(): HasOne
-    {
-        return $this->hasOne(Cart::class);
-    }
-    public function wishlist(): HasOne
-    {
-        return $this->hasOne(Wishlist::class);
-    }
     public function city(): HasOne
     {
         return $this->hasOne(City::class);
