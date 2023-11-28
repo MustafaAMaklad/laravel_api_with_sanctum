@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Store;
@@ -14,11 +14,14 @@ class AdminController extends Controller
     public function updateAccountStatus(Request $request)
     {
         $request->validate([
-            'id' => 'required', // add rule to check if exists
+            'id' => [
+                'required',
+                Rule::exists('users', 'id')
+            ],
             'status' => 'required|in:active,blocked'
         ]);
 
-        $user = User::where('id', $request->id)->firstOrfail();
+        $user = User::find($request->id);
         $status = $request->status;
 
         if ($user->status === $status) {

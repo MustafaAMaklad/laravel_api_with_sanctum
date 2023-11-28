@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +30,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['admin']], function () {
         Route::post('/admin/logout', [AuthController::class, 'logout']);
         Route::put('/admin/account/status', [AdminController::class, 'updateAccountStatus']);
-        Route::get('/admin/show/users', [UserController::class, 'index']);
-        Route::get('/admin/show/user/{id}', [UserController::class, 'show']);
+        Route::get('/admin/show/users', [AdminController::class, 'showUsers']);
     });
     Route::group(['middleware' => ['store']], function () {
         Route::post('/store/logout', [AuthController::class, 'logout']);
