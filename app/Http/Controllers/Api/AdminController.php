@@ -68,46 +68,69 @@ class AdminController extends Controller
                 ]
             ]);
         } else {
-            $query = User::query();
+            // $query = User::query();
 
-            foreach ($request->query() as $key => $value) {
-                if ($key === 'status' || $key === 'role') {
-                    $query->where($key, $value);
-                }
+            // foreach ($request->query() as $key => $value) {
+            //     if ($key === 'status' || $key === 'role') {
+            //         $query->where($key, $value);
+            //     }
+            // }
+
+            // $ids = $query->pluck('id')->values()->toArray();
+
+            // $clients = Client::with('user')->whereIn('user_id', $ids);
+            // $stores = Store::with('user')->whereIn('user_id', $ids);
+            // if (isset($request->query()['sortbyname']) && isset($request->query()['sortbydate'])) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'data' => null, 'message' => 'Can sort by only one attribute'
+            //     ], 422);
+            // }
+            // if (isset($request->query()['sortbyname'])) {
+            //     if ($request->query()['sortbyname'] === '0') {
+            //         $clients->orderBy('first_name', 'desc');
+            //         $stores->orderBy('name', 'desc');
+            //     } else {
+            //         $clients->orderBy('first_name', 'asc');
+            //         $stores->orderBy('name', 'asc');
+            //     }
+            // }
+            // if (isset($request->query()['sortbydate'])) {
+            //     if ($request->query()['sortbydate'] === '0') {
+            //         $clients->orderBy('created_at', 'desc');
+            //         $stores->orderBy('created_at', 'desc');
+            //     } else {
+            //         $clients->orderBy('created_at', 'asc');
+            //         $stores->orderBy('created_at', 'asc');
+            //     }
+            // }
+
+
+            // return response()->json([
+            //     'status' => true,
+            //     'data' => [
+            //         'clients' => $clients->get(),
+            //         'stores' => $stores->get()
+            //     ]
+            // ]);
+
+            $filters = $request->query();
+            $clientsQuery = Client::with('user');
+            $storesQuery= Store::query();
+
+            foreach ($filters as $column => $value) {
+
+                $clientsQuery->when($column === 'status' || $column === 'role', function($clientsQuery) use ($column, $value) {
+                    $clientsQuery->where($column, $value);
+                  });
+                // $storesQuery->whereHas('user', function ($storesQuery) use ($column, $value) {
+                //   $storesQuery->where($column, $value);
+                // });
             }
+            $clients = $clientsQuery->get();
 
-            $ids = $query->pluck('id')->values()->toArray();
+            return response()->json(['clients' => $clients->with('user')->get()]);
 
-            $clients = Client::with('user')->whereIn('user_id', $ids);
-            $stores = Store::with('user')->whereIn('user_id', $ids);
-
-            if (isset($request->query()['sortbyname'])) {
-                if ($request->query()['sortbyname'] === '0') {
-                    $clients->orderBy('first_name', 'desc');
-                    $stores->orderBy('name', 'desc');
-                } else {
-                    $clients->orderBy('first_name', 'asc');
-                    $stores->orderBy('name', 'asc');
-                }
-            }
-            if (isset($request->query()['sortbydate'])) {
-                if ($request->query()['sortbydate'] === '0') {
-                    $clients->orderBy('created_at', 'desc');
-                    $stores->orderBy('created_at', 'desc');
-                } else {
-                    $clients->orderBy('created_at', 'asc');
-                    $stores->orderBy('created_at', 'asc');
-                }
-            }
-
-
-            return response()->json([
-                'status' => true,
-                'data' => [
-                    'clients' => $clients->get(),
-                    'stores' => $stores->get()
-                ]
-            ]);
         }
     }
 }
