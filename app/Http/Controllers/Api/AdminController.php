@@ -3,25 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Rules\SortAttribute;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Store;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
     public function updateAccountStatus(Request $request)
     {
         $request->validate([
-            'id' => [
-                'required',
-                Rule::exists('users', 'id')
-            ],
+            'user_id' => 'required|exists:users,id',
             'status' => 'required|in:active,blocked'
         ]);
 
-        $user = User::find($request->id);
+        $user = User::find($request->user_id);
         $status = $request->status;
 
         if ($user->status === $status) {
@@ -52,8 +51,14 @@ class AdminController extends Controller
         $request->validate([
             'status' => 'in:active,blocked,pending',
             'role' => 'in:client,store',
-            'sortbyname' => 'in:1,0',
-            'sortbydate' => 'in:1,0'
+            'sortbyname' => [
+                'in:desc,asc',
+                New SortAttribute
+            ],
+            'sortbydate' => [
+                'in:desc,asc',
+                New SortAttribute
+            ]
         ]);
 
         if (!$request->query()) {
@@ -68,69 +73,38 @@ class AdminController extends Controller
                 ]
             ]);
         } else {
-            // $query = User::query();
+            $clients = Client::whereHas('user', function ($query) use ($request) {
+                $query->when($request['role'], function ($query) use ($request) {
+                    $query->where('role', $request['role']);
+                })->when($request['status'], function ($query) use ($request) {
+                    $query->where('status', $request['status']);
+                });
+            })->when($request['sortbyname'], function ($query) use ($request) {
+                $query->orderBy('first_name', $request['sortbyname'] === 'desc' ? 'desc' : 'asc');
+            })->when($request['sortbydate'], function ($query) use ($request) {
+                $query->orderBy('created_at', $request['sortbydate'] === 'desc' ? 'desc' : 'asc');
+            })->with('user')->get();
 
-            // foreach ($request->query() as $key => $value) {
-            //     if ($key === 'status' || $key === 'role') {
-            //         $query->where($key, $value);
-            //     }
-            // }
+            $stores = Store::whereHas('user', function ($query) use ($request) {
+                $query->when($request['role'], function ($query) use ($request) {
+                    $query->where('role', $request['role']);
+                });
+                $query->when($request['status'], function ($query) use ($request) {
+                    $query->where('status', $request['status']);
+                });
+            })->when($request['sortbyname'], function ($query) use ($request) {
+                $query->orderBy('name', $request['sortbyname'] === 'desc' ? 'desc' : 'asc');
+            })->when($request['sortbydate'], function ($query) use ($request) {
+                $query->orderBy('created_at', $request['sortbydate'] === 'desc' ? 'desc' : 'asc');
+            })->with('user')->get();
 
-            // $ids = $query->pluck('id')->values()->toArray();
-
-            // $clients = Client::with('user')->whereIn('user_id', $ids);
-            // $stores = Store::with('user')->whereIn('user_id', $ids);
-            // if (isset($request->query()['sortbyname']) && isset($request->query()['sortbydate'])) {
-            //     return response()->json([
-            //         'status' => false,
-            //         'data' => null, 'message' => 'Can sort by only one attribute'
-            //     ], 422);
-            // }
-            // if (isset($request->query()['sortbyname'])) {
-            //     if ($request->query()['sortbyname'] === '0') {
-            //         $clients->orderBy('first_name', 'desc');
-            //         $stores->orderBy('name', 'desc');
-            //     } else {
-            //         $clients->orderBy('first_name', 'asc');
-            //         $stores->orderBy('name', 'asc');
-            //     }
-            // }
-            // if (isset($request->query()['sortbydate'])) {
-            //     if ($request->query()['sortbydate'] === '0') {
-            //         $clients->orderBy('created_at', 'desc');
-            //         $stores->orderBy('created_at', 'desc');
-            //     } else {
-            //         $clients->orderBy('created_at', 'asc');
-            //         $stores->orderBy('created_at', 'asc');
-            //     }
-            // }
-
-
-            // return response()->json([
-            //     'status' => true,
-            //     'data' => [
-            //         'clients' => $clients->get(),
-            //         'stores' => $stores->get()
-            //     ]
-            // ]);
-
-            $filters = $request->query();
-            $clientsQuery = Client::with('user');
-            $storesQuery= Store::query();
-
-            foreach ($filters as $column => $value) {
-
-                $clientsQuery->when($column === 'status' || $column === 'role', function($clientsQuery) use ($column, $value) {
-                    $clientsQuery->where($column, $value);
-                  });
-                // $storesQuery->whereHas('user', function ($storesQuery) use ($column, $value) {
-                //   $storesQuery->where($column, $value);
-                // });
-            }
-            $clients = $clientsQuery->get();
-
-            return response()->json(['clients' => $clients->with('user')->get()]);
-
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'clients' => $clients,
+                    'stores' => $stores,
+                ]
+            ]);
         }
     }
 }

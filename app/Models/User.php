@@ -52,12 +52,4 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    public function client(): HasOne
-    {
-        return $this->hasOne(Client::class);
-    }
-    public function store(): HasOne
-    {
-        return $this->hasOne(Store::class);
-    }
 }
