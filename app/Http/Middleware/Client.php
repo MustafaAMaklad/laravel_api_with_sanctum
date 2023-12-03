@@ -16,12 +16,19 @@ class Client
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        if (!$user || $user->role !== 'user') {
-            return response()->json(['message' => 'Unauthorized'], 403);
 
-            if ($user->status === 'blocked') {
-                return response()->json(['message'=> 'Your account is currently blocked'], 403);
-            }
+        if ($user->role !== 'client') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ], 401);
+
+        }
+        if ($user->status === 'blocked') {
+            return response()->json([
+                'status' => false,
+                'message' => 'Your account is currently blocked'
+            ], 401);
         }
         return $next($request);
     }

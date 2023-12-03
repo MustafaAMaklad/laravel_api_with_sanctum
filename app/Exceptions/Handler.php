@@ -2,11 +2,9 @@
 
 namespace App\Exceptions;
 
-use App\Models\Product;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Arr;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
@@ -34,19 +32,19 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        if ($e instanceof AuthenticationException) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthenticated.'
+            ], 401);
+        }
         if ($e instanceof ModelNotFoundException) {
 
             return response()->json([
                 'status' => false,
-                'data' => null, 'message' => 'Id not found'
+                'data' => null, 'message' => 'ID not found.'
             ], 404);
-        }
-        if ($e instanceof InvalidUserRoleException) {
-
-            return response()->json([
-                'status' => false,
-                'data' => null, 'message' => 'You can not perform this action on users of this role'
-            ], 422);
         }
 
         return parent::render($request, $e);

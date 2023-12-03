@@ -9,16 +9,24 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Store;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
     public function updateAccountStatus(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'status' => 'required|in:active,blocked'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         $user = User::find($request->user_id);
         $status = $request->status;
@@ -48,18 +56,25 @@ class AdminController extends Controller
 
     public function showUsers(Request $request)
     {
-        $request->validate([
-            'status' => 'in:active,blocked,pending',
+        $validator = Validator::make($request->all(), [
             'role' => 'in:client,store',
+            'status' => 'in:active,blocked,pending',
             'sortbyname' => [
                 'in:desc,asc',
-                New SortAttribute
+                new SortAttribute
             ],
             'sortbydate' => [
                 'in:desc,asc',
-                New SortAttribute
+                new SortAttribute
             ]
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
 
         if (!$request->query()) {
             $clients = Client::with('user')->get();
