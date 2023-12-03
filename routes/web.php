@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Web\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Client;
+use App\Models\Store;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/admin/dashboard/clients', [AdminController::class, 'clientDashboard']);
+Route::get('/admin/dashboard/stores', [AdminController::class, 'storeDashboard']);

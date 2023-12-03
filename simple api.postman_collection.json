@@ -7,7 +7,427 @@
 	},
 	"item": [
 		{
-			"name": "product",
+			"name": "public",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "login client",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "kaitlin83@example.net",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/client/login",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"client",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register client",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Aly",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Aly",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "aly@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "123456",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "123456",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/client/register",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"client",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "aida.tillman@example.net",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/store/login",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "register store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/store/register",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "client",
+			"item": [
+				{
+					"name": "logout client",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{client_api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/client/logout",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"client",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show products",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "show users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/admin/show/users?role=client&status=blocked",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"show",
+								"users"
+							],
+							"query": [
+								{
+									"key": "role",
+									"value": "client"
+								},
+								{
+									"key": "status",
+									"value": "blocked"
+								},
+								{
+									"key": "sortbyname",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "sortbydate",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "mustafa@admin.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/admin/login",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{localhost}}/api/admin/logout",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update account status",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_api_access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user_id",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "blocked",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/admin/account/status",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"account",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "store",
 			"item": [
 				{
 					"name": "create product",
@@ -17,7 +437,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{simple_auth_token}}",
+									"value": "{{store_api_access_token}}",
 									"type": "string"
 								}
 							]
@@ -35,34 +455,77 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "Coffee Machine",
-									"type": "text"
+									"value": "Dell",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "slug",
-									"value": "coffee-machine",
-									"type": "text"
+									"value": "dell",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "description",
-									"value": "This is coffee machine",
-									"type": "text"
+									"value": "This is dell",
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "price",
-									"value": "165.88",
-									"type": "text"
+									"value": "999.98",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ertet",
+									"value": "rtertey",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{localhost}}/api/products",
+							"raw": "{{localhost}}/api/store/product",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
-								"products"
+								"store",
+								"product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Mac",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localhost}}/api/store/logout",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"store",
+								"logout"
 							]
 						}
 					},
@@ -94,22 +557,21 @@
 							"urlencoded": [
 								{
 									"key": "price",
-									"value": "7.40",
+									"value": "99.70",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8000/api/products/9",
-							"protocol": "http",
+							"raw": "{{localhost}}/api/store/product/2",
 							"host": [
-								"localhost"
+								"{{localhost}}"
 							],
-							"port": "8000",
 							"path": [
 								"api",
-								"products",
-								"9"
+								"store",
+								"product",
+								"2"
 							]
 						}
 					},
@@ -137,176 +599,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/products/4",
+							"raw": "{{localhost}}/api/store/product/1",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
-								"products",
-								"4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get products",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{localhost}}/api/products",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"products"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "user",
-			"item": [
-				{
-					"name": "user login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "John Doe",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "email",
-									"value": "john@doe.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "john1234",
-									"type": "text"
-								},
-								{
-									"key": "password_confirmation",
-									"value": "john1234",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{localhost}}/api/login",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "user logout",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
-						}
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{simple_auth_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{localhost}}/api/logout",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "signup",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "Jane Doe",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "jane@doe.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "jane1234",
-									"type": "text"
-								},
-								{
-									"key": "password_confirmation",
-									"value": "jane1234",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{localhost}}/api/register",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"register"
+								"store",
+								"product",
+								"1"
 							]
 						}
 					},
@@ -342,8 +643,8 @@
 			"type": "string"
 		},
 		{
-			"key": "simple_auth_token",
-			"value": "3|ul9BRec70fiRTjBUkiOzwsdviPZSV5PFuWUU3fFp3b9ea6b3",
+			"key": "simple_api_access_token",
+			"value": "4|ztOHXdvT9lyxni8VXIpFRsKRmDWZbwFPGh5Dm0XO9eaede00",
 			"type": "string"
 		}
 	]

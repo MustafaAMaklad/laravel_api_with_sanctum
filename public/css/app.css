@@ -1,0 +1,14 @@
+.active {
+    color: green;
+}
+.pending {
+    color: orange;
+}
+.blocked {
+    color: red;
+}
+
+.pagination-links svg {
+    width: 1rem;
+    height: 1rem;
+}
