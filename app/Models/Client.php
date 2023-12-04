@@ -20,10 +20,10 @@ class Client extends Model
     {
         return $this->hasOne(City::class);
     }
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user(): BelongsTo
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
     protected function fullName(): Attribute
     {
         return Attribute::make(
