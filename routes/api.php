@@ -3,10 +3,6 @@
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CoponController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\UserController;
-use App\Models\Copon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/admin/show/users', [AdminController::class, 'showUsers']);
         Route::get('/admin/copon/show', [CoponController::class, 'show']);
         Route::post('/admin/copon/create', [CoponController::class, 'store']);
-        Route::post('/admin/copon/update/{id}', [CoponController::class, 'update']);
+        Route::post('/admin/copon/update', [CoponController::class, 'update']);
         Route::delete('/admin/copon/delete', [CoponController::class, 'destroy']);
     });
     Route::group(['middleware' => ['store']], function () {
