@@ -28,7 +28,7 @@
 									"formdata": [
 										{
 											"key": "email",
-											"value": "kaitlin83@example.net",
+											"value": "cummings.wyatt@example.net",
 											"type": "text"
 										},
 										{
@@ -195,7 +195,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{client_api_access_token}}",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -236,60 +236,334 @@
 			"name": "admin",
 			"item": [
 				{
-					"name": "show users",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{admin_api_access_token}}",
-									"type": "string"
+					"name": "user account",
+					"item": [
+						{
+							"name": "show users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/admin/show/users?status=active&sortbydate=desc",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"show",
+										"users"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "client",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "active"
+										},
+										{
+											"key": "sortbyname",
+											"value": "asc",
+											"disabled": true
+										},
+										{
+											"key": "sortbydate",
+											"value": "desc"
+										}
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{localhost}}/api/admin/show/users?role=client&status=blocked",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"admin",
-								"show",
-								"users"
-							],
-							"query": [
-								{
-									"key": "role",
-									"value": "client"
+						{
+							"name": "update account status",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "status",
-									"value": "blocked"
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "user_id",
+											"value": "7",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "active",
+											"type": "text"
+										},
+										{
+											"key": "23412",
+											"value": "ffgg",
+											"type": "text",
+											"disabled": true
+										}
+									]
 								},
-								{
-									"key": "sortbyname",
-									"value": "0",
-									"disabled": true
-								},
-								{
-									"key": "sortbydate",
-									"value": "0",
-									"disabled": true
+								"url": {
+									"raw": "{{localhost}}/api/admin/account/status",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"account",
+										"status"
+									]
 								}
-							]
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "coupon",
+					"item": [
+						{
+							"name": "add coupon",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code",
+											"value": "AFZD1247",
+											"type": "text"
+										},
+										{
+											"key": "usage_number",
+											"value": "50",
+											"type": "text"
+										},
+										{
+											"key": "discount_percent",
+											"value": "0.70",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/copon/create",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"copon",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete coupon",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "coupon_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/copon/delete",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"copon",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update coupon",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "code",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "usage_number",
+											"value": "200",
+											"type": "text"
+										},
+										{
+											"key": "discount_percent",
+											"value": "f",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/copon/update/2",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"copon",
+										"update",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show coupons",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/admin/copon/show",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"copon",
+										"show"
+									],
+									"query": [
+										{
+											"key": "coupon_id",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "login admin",
@@ -365,60 +639,6 @@
 								"api",
 								"admin",
 								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update account status",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{admin_api_access_token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "user_id",
-									"value": "8",
-									"type": "text"
-								},
-								{
-									"key": "status",
-									"value": "blocked",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{localhost}}/api/admin/account/status",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"admin",
-								"account",
-								"status"
 							]
 						}
 					},
