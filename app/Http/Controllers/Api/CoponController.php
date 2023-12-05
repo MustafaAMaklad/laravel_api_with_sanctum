@@ -97,7 +97,7 @@ class CoponController extends Controller
             'coupon_id' => 'required|exists:copons,id',
             'code' => 'string|unique:copons,code|min:8',
             'usage_number' => 'integer|gt:0',
-            'discount_percent' => 'numeric|between:0.01,1.00'
+            'discount_percent' => 'numeric|between:1,100'
         ]);
 
         if ($validator->fails()) {
