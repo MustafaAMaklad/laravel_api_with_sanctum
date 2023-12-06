@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Models\Copon;
 use Illuminate\Support\Facades\Validator;
 
-class CoponController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $coupons = Copon::all();
+        $categories = Category::all();
+
         return response()->json([
             'status' => true,
-            'message' => 'All Coupons',
-            'data' => $coupons
+            'message' => 'All categories.',
+            'data' => $categories
         ]);
     }
 
@@ -28,9 +29,8 @@ class CoponController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'code' => 'required|string|unique:copons,code|min:8',
-            'usage_number' => 'required|integer|gt:0',
-            'discount_percent' => 'required|numeric|between:1,100'
+            'category_name_en' => 'required|string|regex:/^[A-Za-z]+$/',
+            'category_name_ar' => 'required|string|regex:/\p{Arabic}/u',
         ]);
 
         if ($validator->fails()) {
@@ -40,16 +40,16 @@ class CoponController extends Controller
             ]);
         }
 
-        $coupon = new Copon;
-        $coupon->code = $request->code;
-        $coupon->usage_number = $request->usage_number;
-        $coupon->discount_percent = $request->discount_percent;
-        $coupon->save();
+        $category = new Category;
+        $category->name_en = $request->category_name_en;
+        $category->name_ar = $request->category_name_ar;
+
+        $category->save();
 
         return response()->json([
             'status' => true,
-            'message' => 'Coupon was added successfully.',
-            'data' => $coupon
+            'message' => 'Category was created successfully.',
+            'data' => $category
         ]);
     }
 
@@ -60,16 +60,11 @@ class CoponController extends Controller
     {
         // check if no param is given return all
         if (!$request->query()) {
-            $coupons = Copon::all();
-            return response()->json([
-                'status' => true,
-                'message' => 'All Coupons',
-                'data' => $coupons
-            ]);
+            return $this->index();
         }
         // validate
         $validator = Validator::make($request->query(), [
-            'coupon_id' => 'exists:copons,id',
+            'category_id' => 'exists:categories,id',
         ]);
 
         if ($validator->fails()) {
@@ -78,13 +73,13 @@ class CoponController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        // send coupon in response
-        $copon = Copon::find($request->coupon_id);
+        // send category in response
+        $category = Category::find($request->category_id);
 
         return response()->json([
             'status' => true,
-            'message' => 'Show Coupon.',
-            'data' => $copon
+            'message' => 'Show category.',
+            'data' => $category
         ]);
     }
 
@@ -94,10 +89,9 @@ class CoponController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'coupon_id' => 'required|exists:copons,id',
-            'code' => 'string|unique:copons,code|min:8',
-            'usage_number' => 'integer|gt:0',
-            'discount_percent' => 'numeric|between:1,100'
+            'category_id' => 'required|exists:categories,id',
+            'category_name_en' => 'string|regex:/^[A-Za-z]+$/',
+            'category_name_ar' => 'string|regex:/\p{Arabic}/u',
         ]);
 
         if ($validator->fails()) {
@@ -107,26 +101,23 @@ class CoponController extends Controller
             ]);
         }
 
-        $coupon = Copon::find($request->coupon_id);
+        $category = Category::find($request->category_id);
 
-        if ($request->has('coupon_code')) {
-            $coupon->code = $request->coupon_code;
+        if ($request->has('category_name_en')) {
+            $category->name_en = $request->category_name_en;
         }
 
-        if ($request->has('usage_number')) {
-            $coupon->usage_number = $request->usage_number;
+        if ($request->has('category_name_ar')) {
+            $category->name_ar = $request->category_name_ar;
         }
 
-        if ($request->has('discount_percent')) {
-            $coupon->discount_percent = $request->discount_percent;
-        }
 
-        $coupon->save();
+        $category->save();
 
         return response()->json([
             'status' => true,
-            'message' => $coupon->wasChanged() ?  'Coupon was updated successfully.' : 'Coupon was not updated.',
-            'data' => $coupon
+            'message' => $category->wasChanged() ?  'Category was updated successfully.' : 'Category was not updated.',
+            'data' => $category
         ]);
     }
 
@@ -136,7 +127,7 @@ class CoponController extends Controller
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'coupon_id' => 'required|exists:copons,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {
@@ -145,23 +136,21 @@ class CoponController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-
-        $isDeleted = Copon::where('id', $request->coupon_id)->delete();
+        $isDeleted = Category::where('id', $request->category_id)->delete();
 
         if ($isDeleted) {
 
             return response()->json([
                 'status' => true,
-                'message' => 'Coupon was deleted successfully',
+                'message' => 'Category was deleted successfully',
                 'data' => null
             ]);
         } else {
 
             return response()->json([
                 'status' => false,
-                'message' => 'Failed tp delete coupon'
+                'message' => 'Failed tp delete category'
             ]);
         }
-
     }
 }

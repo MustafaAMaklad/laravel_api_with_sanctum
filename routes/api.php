@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CoponController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,13 +27,21 @@ Route::post('/store/login', [AuthController::class, 'login']);
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['admin']], function () {
+        // Authentication
         Route::post('/admin/logout', [AuthController::class, 'logout']);
+        // User Account
         Route::put('/admin/account/status', [AdminController::class, 'updateAccountStatus']);
         Route::get('/admin/show/users', [AdminController::class, 'showUsers']);
+        // Coupons
         Route::get('/admin/copon/show', [CoponController::class, 'show']);
         Route::post('/admin/copon/create', [CoponController::class, 'store']);
         Route::post('/admin/copon/update', [CoponController::class, 'update']);
         Route::delete('/admin/copon/delete', [CoponController::class, 'destroy']);
+        // Categories
+        Route::get('/admin/category/show', [CategoryController::class, 'show']);
+        Route::post('/admin/category/create', [CategoryController::class, 'store']);
+        Route::post('/admin/category/update', [CategoryController::class, 'update']);
+        Route::delete('/admin/category/delete', [CategoryController::class, 'destroy']);
     });
     Route::group(['middleware' => ['store']], function () {
         Route::post('/store/logout', [AuthController::class, 'logout']);
