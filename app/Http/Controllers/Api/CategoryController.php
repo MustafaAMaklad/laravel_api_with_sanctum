@@ -58,13 +58,9 @@ class CategoryController extends Controller
      */
     public function show(Request $request)
     {
-        // check if no param is given return all
-        if (!$request->query()) {
-            return $this->index();
-        }
         // validate
         $validator = Validator::make($request->query(), [
-            'category_id' => 'exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         if ($validator->fails()) {

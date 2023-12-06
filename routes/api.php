@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AuthStoreController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CoponController;
+use App\Http\Controllers\Api\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +22,11 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('/client/register', [AuthController::class, 'register']);
 Route::post('/store/register', [AuthController::class, 'register']);
+Route::post('/store/register', [AuthStoreController::class, 'register']);
 Route::post('/admin/login', [AuthController::class, 'login']);
 Route::post('/client/login', [AuthController::class, 'login']);
 Route::post('/store/login', [AuthController::class, 'login']);
+Route::post('/public/upload', [UploadController::class, 'upload']);
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -38,6 +42,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/admin/copon/update', [CoponController::class, 'update']);
         Route::delete('/admin/copon/delete', [CoponController::class, 'destroy']);
         // Categories
+        Route::get('/admin/category/index', [CategoryController::class, 'index']);
         Route::get('/admin/category/show', [CategoryController::class, 'show']);
         Route::post('/admin/category/create', [CategoryController::class, 'store']);
         Route::post('/admin/category/update', [CategoryController::class, 'update']);

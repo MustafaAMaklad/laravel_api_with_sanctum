@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        $products = Product::all();
+        return response()->json([
+            'status' => true,
+            'message' => 'All products.',
+            'data' => $products
+        ]);
     }
 
     /**
@@ -24,10 +30,10 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'price' => 'required',
+        $validator = Validator::make($request->input(), [
+            'product_name_en' => 'required|regex:/^[A-Za-z]+$/',
+            'product_name_ar' => 'required|regex:/\p{Arabic}/u',
+            'slug' => 'required|'
         ]);
 
         $product = new Product;
