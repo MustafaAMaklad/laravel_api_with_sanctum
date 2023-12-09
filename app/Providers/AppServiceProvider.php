@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Rules\PriceFilter;
+use App\Rules\ProductBelongToStore;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Validator::extend('price_filter', function () {
             return PriceFilter::passes();
+        });
+        Validator::extend('product_belong_to_store', function () {
+            return ProductBelongToStore::passes(request()->product_id);
         });
     }
 }

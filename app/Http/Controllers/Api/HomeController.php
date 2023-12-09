@@ -27,8 +27,8 @@ class HomeController extends Controller
             ]);
         }
         $products = Product::whereHas('store', function ($query) use ($request) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('city_id', $request->user()->city_id);
+            $query->whereHas('user', function ($query) use ($request) {
+                $query->where('city_id', $request->user()->city_id);
             });
         })->with(['store', 'category']);
 

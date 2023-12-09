@@ -13,6 +13,7 @@ return [
     |
     */
     'price_filter' => 'The price filter must include price from and price to.',
+    'product_belong_to_store' => 'Your store doesn\'t have a product with the given ID.',
 
     'accepted' => 'The :attribute field must be accepted.',
     'accepted_if' => 'The :attribute field must be accepted when :other is :value.',

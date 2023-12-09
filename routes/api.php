@@ -29,6 +29,7 @@ Route::post('/store/auth/login', [AuthStoreController::class, 'login']);
 Route::post('/client/auth/register', [AuthController::class, 'register']);
 Route::post('/client/auth/login', [AuthController::class, 'login']);
 Route::post('/admin/auth/login', [AuthController::class, 'login']);
+Route::get('/products/show', [ProductController::class, 'show']);
 
 
 // Protected routes
@@ -50,10 +51,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/admin/category/create', [CategoryController::class, 'store']);
         Route::post('/admin/category/update', [CategoryController::class, 'update']);
         Route::delete('/admin/category/delete', [CategoryController::class, 'destroy']);
+        // Products
+        Route::get('/admin/products/show', [ProductController::class, 'index']);
     });
     Route::group(['middleware' => ['store']], function () {
         Route::post('/store/auth/logout', [AuthStoreController::class, 'logout']);
         Route::post('/store/product/create', [ProductController::class, 'store']);
+        Route::get('/store/products/show', [ProductController::class, 'showProductsForStore']);
+        Route::post('/store/product/update', [ProductController::class, 'update']);
+        Route::delete('/store/product/delete', [ProductController::class, 'destroy']);
     });
     Route::group(['middleware' => ['client']], function () {
         Route::post('/client/auth/logout', [AuthController::class, 'logout']);
