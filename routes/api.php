@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuthStoreController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CoponController;
+use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,19 +22,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::post('/client/register', [AuthController::class, 'register']);
-Route::post('/store/register', [AuthController::class, 'register']);
-Route::post('/store/register', [AuthStoreController::class, 'register']);
-Route::post('/admin/login', [AuthController::class, 'login']);
-Route::post('/client/login', [AuthController::class, 'login']);
-Route::post('/store/login', [AuthController::class, 'login']);
 Route::post('/public/upload', [UploadController::class, 'upload']);
+// Auth
+Route::post('/store/auth/register', [AuthStoreController::class, 'register']);
+Route::post('/store/auth/login', [AuthStoreController::class, 'login']);
+Route::post('/client/auth/register', [AuthController::class, 'register']);
+Route::post('/client/auth/login', [AuthController::class, 'login']);
+Route::post('/admin/auth/login', [AuthController::class, 'login']);
+
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['admin']], function () {
         // Authentication
-        Route::post('/admin/logout', [AuthController::class, 'logout']);
+        Route::post('/admin/auth/logout', [AuthController::class, 'logout']);
         // User Account
         Route::put('/admin/account/status', [AdminController::class, 'updateAccountStatus']);
         Route::get('/admin/show/users', [AdminController::class, 'showUsers']);
@@ -49,9 +52,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('/admin/category/delete', [CategoryController::class, 'destroy']);
     });
     Route::group(['middleware' => ['store']], function () {
-        Route::post('/store/logout', [AuthController::class, 'logout']);
+        Route::post('/store/auth/logout', [AuthStoreController::class, 'logout']);
+        Route::post('/store/product/create', [ProductController::class, 'store']);
     });
     Route::group(['middleware' => ['client']], function () {
-        Route::post('/client/logout', [AuthController::class, 'logout']);
+        Route::post('/client/auth/logout', [AuthController::class, 'logout']);
+        Route::get('/home/products/show', [HomeController::class, 'showProducts']);
     });
 });

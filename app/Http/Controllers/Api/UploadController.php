@@ -22,8 +22,8 @@ class UploadController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-        $directory = now()->format('m-Y');
-        $links = UploadHelper::storeFiles($request->file('files'), $directory);
+
+        $links = UploadHelper::storeFiles($request->file('files'));
 
         return response()->json([
             'status' => true,

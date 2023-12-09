@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Rules\PriceFilter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Validator::extend('price_filter', function () {
+            return PriceFilter::passes();
+        });
     }
 }
