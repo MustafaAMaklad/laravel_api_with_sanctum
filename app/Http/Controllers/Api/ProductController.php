@@ -103,7 +103,7 @@ class ProductController extends Controller
             $query->where('name_en', 'like',  '%' . $request->product_name_en . '%');
         })->when($request->has('product_name_ar'), function ($query) use ($request) {
             $query->where('name_ar', 'like',  '%' . $request->product_name_ar . '%');
-        })->when($request->has('price_from') && $request->has('price_from'), function ($query) use ($request) {
+        })->when($request->has('price_from') && $request->has('price_to'), function ($query) use ($request) {
             $query->where('price', '>=', $request->price_from)->where('price', '<=', $request->price_to);
         })->when($request->has('category_id'), function ($query) use ($request) {
             $query->where('category_id',  $request->category_id);
