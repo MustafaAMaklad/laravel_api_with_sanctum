@@ -29,7 +29,7 @@ Route::post('/store/auth/login', [AuthStoreController::class, 'login']);
 Route::post('/client/auth/register', [AuthController::class, 'register']);
 Route::post('/client/auth/login', [AuthController::class, 'login']);
 Route::post('/admin/auth/login', [AuthController::class, 'login']);
-Route::get('/products/show', [ProductController::class, 'show']);
+Route::post('/products/show', [ProductController::class, 'show']);
 
 
 // Protected routes
@@ -63,6 +63,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::group(['middleware' => ['client']], function () {
         Route::post('/client/auth/logout', [AuthController::class, 'logout']);
-        Route::get('/home/products/show', [HomeController::class, 'showProducts']);
+        Route::post('/home/products/show', [HomeController::class, 'showProducts']);
+        Route::post('/home/cart/add', [HomeController::class, 'addToCart']);
+        Route::post('/home/cart/remove', [HomeController::class, 'removeFromCart']);
+        Route::post('/home/cart/remove/all', [HomeController::class, 'removeAllFromCart']);
+        Route::post('/home/cart/update', [HomeController::class, 'updateInCart']);
     });
 });

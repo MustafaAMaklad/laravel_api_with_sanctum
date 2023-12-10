@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\User;
 use App\Models\Store;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -58,7 +56,7 @@ class ProductController extends Controller
         $product->store_id = $store->id;
         $product->image = $request->image;
         $product->save();
-        $product->refresh();
+        // $product->refresh();
 
         $product = $product->where('id', $product->id)->with(['store', 'category'])->get();
 
@@ -74,7 +72,7 @@ class ProductController extends Controller
      */
     public function show(Request $request)
     {
-        $validator = Validator::make($request->query(), [
+        $validator = Validator::make($request->all(), [
             'product_name_en' => 'regex:/^[A-Za-z]+$/',
             'product_name_ar' => 'regex:/\p{Arabic}/u',
             'price_from' => 'numeric|price_filter',
@@ -92,8 +90,8 @@ class ProductController extends Controller
 
         $products = Product::with(['store', 'category']);
 
-        if (!$request->query()) {
-            $products = $products->paginate(10);
+        if (!$request->all()) {
+            $products = $products->get();
             return response()->json([
                 'status' => true,
                 'message' => 'All products.',
@@ -122,7 +120,7 @@ class ProductController extends Controller
 
     public function showProductsForStore(Request $request)
     {
-        $validator = Validator::make($request->query(), [
+        $validator = Validator::make($request->all(), [
             'product_id' => 'integer|exists:products,id'
         ]);
 
@@ -160,7 +158,7 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-        $validator = Validator::make($request->input(), [
+        $validator = Validator::make($request->all(), [
             'product_id' => 'bail|required|exists:products,id|product_belong_to_store',
             'product_name_en' => 'regex:/^[A-Za-z]+$/',
             'product_name_ar' => 'regex:/\p{Arabic}/u',
@@ -212,7 +210,7 @@ class ProductController extends Controller
      */
     public function destroy(Request $request)
     {
-        $validator = Validator::make($request->input(), [
+        $validator = Validator::make($request->all(), [
             'product_id' => 'bail|required|exists:products,id|product_belong_to_store',
         ]);
         if ($validator->fails()) {
@@ -225,7 +223,7 @@ class ProductController extends Controller
         if ($isDeleted) {
             return response()->json([
                 'status' => $isDeleted,
-                'message' => $isDeleted ? 'Product was deleted successfully.' : 'Failed to delete product.',
+                'message' => $isDeleted ? 'Product was deleted successfully.' : 'Store does not have a product with the given ID',
                 'data' => null
             ]);
         }

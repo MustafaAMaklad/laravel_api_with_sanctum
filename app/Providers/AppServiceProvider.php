@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Rules\ItemBelongToClient;
 use App\Rules\PriceFilter;
 use App\Rules\ProductBelongToStore;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
         });
         Validator::extend('product_belong_to_store', function () {
             return ProductBelongToStore::passes(request()->product_id);
+        });
+        Validator::extend('item_belong_to_client', function () {
+            return ItemBelongToClient::passes(request()->item_id);
         });
     }
 }
