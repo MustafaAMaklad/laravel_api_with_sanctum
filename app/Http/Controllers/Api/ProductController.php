@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Show a listing of the resource.
      */
     public function index()
     {
@@ -56,7 +56,6 @@ class ProductController extends Controller
         $product->store_id = $store->id;
         $product->image = $request->image;
         $product->save();
-        // $product->refresh();
 
         $product = $product->where('id', $product->id)->with(['store', 'category'])->get();
 
@@ -68,11 +67,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Show and filter the products based on city.
      */
     public function show(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'city_id' => 'required|exists:cities,id',
             'product_name_en' => 'regex:/^[A-Za-z]+$/',
             'product_name_ar' => 'regex:/\p{Arabic}/u',
             'price_from' => 'numeric|price_filter',
@@ -88,7 +88,11 @@ class ProductController extends Controller
             ]);
         }
 
-        $products = Product::with(['store', 'category']);
+        $products = Product::whereHas('store', function ($query) use ($request) {
+            $query->whereHas('user', function ($query) use ($request) {
+                $query->where('city_id', $request->city_id);
+            });
+        })->with(['store', 'category']);
 
         if (!$request->all()) {
             $products = $products->get();
@@ -118,7 +122,10 @@ class ProductController extends Controller
         ]);
     }
 
-    public function showProductsForStore(Request $request)
+    /**
+     * Show products to store.
+     */
+    public function showForStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'integer|exists:products,id'

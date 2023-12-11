@@ -5,6 +5,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use App\Models\CartItem;
+use App\Models\Cart;
 use App\Models\Client;
 
 class ItemBelongToClient implements ValidationRule
@@ -18,9 +19,12 @@ class ItemBelongToClient implements ValidationRule
     {
         //
     }
-    public static function passes(mixed $value) {
-
-        if (CartItem::find($value)->client_id !== Client::where('user_id', request()->user()->id)->value('id')) {
+    public static function passes(mixed $value)
+    {
+        $clientId = Cart::whereHas('cartItems', function ($query) use ($value) {
+            $query->where('id', $value);
+        })->value('client_id');
+        if ($clientId !== Client::where('user_id', request()->user()->id)->value('id')) {
             return false;
         }
         return true;

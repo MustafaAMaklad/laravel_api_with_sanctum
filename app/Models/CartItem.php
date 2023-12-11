@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CartItem extends Model
 {
@@ -13,9 +14,9 @@ class CartItem extends Model
     /**
      * Get the product associated with the cart item
      */
-    public function product(): BelongsTo
+    public function product(): HasOne
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
     /**
