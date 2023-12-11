@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('/public/upload', [UploadController::class, 'upload']);
 Route::post('/products/show', [ProductController::class, 'show']);
+Route::post('/product/show', [ProductController::class, 'showDetails']);
 // Auth
 Route::post('/store/auth/register', [AuthStoreController::class, 'register']);
 Route::post('/store/auth/login', [AuthStoreController::class, 'login']);

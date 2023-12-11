@@ -92,7 +92,7 @@ class ProductController extends Controller
             $query->whereHas('user', function ($query) use ($request) {
                 $query->where('city_id', $request->city_id);
             });
-        })->with(['store', 'category']);
+        })->where('quantity', '>', 0)->with(['store', 'category']);
 
         if (!$request->all()) {
             $products = $products->get();
@@ -156,6 +156,31 @@ class ProductController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Show store\'s product.',
+            'data' => $products
+        ]);
+    }
+    /**
+     * Show product details.
+     */
+    public function showDetails(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|exists:products,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $products = Product::with(['store', 'category'])->find($request->product_id);
+
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Show product\'s details.',
             'data' => $products
         ]);
     }
