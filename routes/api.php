@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AuthStoreController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\CoponController;
+use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
@@ -42,10 +42,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('/admin/account/status', [AdminController::class, 'updateAccountStatus']);
         Route::get('/admin/show/users', [AdminController::class, 'showUsers']);
         // Coupons
-        Route::get('/admin/copon/show', [CoponController::class, 'show']);
-        Route::post('/admin/copon/create', [CoponController::class, 'store']);
-        Route::post('/admin/copon/update', [CoponController::class, 'update']);
-        Route::delete('/admin/copon/delete', [CoponController::class, 'destroy']);
+        Route::get('/admin/coupon/show', [CouponController::class, 'show']);
+        Route::post('/admin/coupon/create', [CouponController::class, 'store']);
+        Route::post('/admin/coupon/update', [CouponController::class, 'update']);
+        Route::delete('/admin/coupon/delete', [CouponController::class, 'destroy']);
         // Categories
         Route::get('/admin/category/index', [CategoryController::class, 'index']);
         Route::get('/admin/category/show', [CategoryController::class, 'show']);
