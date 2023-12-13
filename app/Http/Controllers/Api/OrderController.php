@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Client;
+use App\Models\Store;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
@@ -131,6 +132,162 @@ class OrderController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Order was made successfully',
+            'data' => $order
+        ]);
+    }
+
+    /**
+     * Accept order
+     */
+    public function accept(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
+        ]);
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $storetId = Store::where('user_id', $request->user()->id)->value('id');
+        $order = Order::with('orderItems.product')
+            ->where('id', $request->order_id)
+            ->where('store_id', $storetId)
+            ->first();
+        if (!$order) {
+            // Validate if order belong to store
+            $this->errors['order'] = [
+                'store' => 'Store does not have an order with the given ID.'
+            ];
+        } elseif ($order->status !== 'new' || $order->status !== 'rejected') {
+            // Validate if order status can be accepted
+            $this->errors['order'] = [
+                'status' => 'Status ' . $order->status . 'can not be marked as accepted.'
+            ];
+        }
+
+        if ($this->errors) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $this->errors
+            ]);
+        }
+
+        $order->status = 'accepted';
+        $order->save();
+        $order->refresh();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order was marked as accepted successfully',
+            'data' => $order
+        ]);
+    }
+
+    /**
+     * Reject order
+     */
+    public function reject(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
+        ]);
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $storetId = Store::where('user_id', $request->user()->id)->value('id');
+        $order = Order::with('orderItems.product')
+            ->where('id', $request->order_id)
+            ->where('store_id', $storetId)
+            ->first();
+        if (!$order) {
+            // Validate if order belong to store
+            $this->errors['order'] = [
+                'store' => 'Store does not have an order with the given ID.'
+            ];
+        } elseif ($order->status !== 'new' || $order->status !== 'accepted') {
+            // Validate if order status can be rejected
+            $this->errors['order'] = [
+                'status' => 'Status ' . $order->status . 'can not be marked as rejected.'
+            ];
+        }
+
+        if ($this->errors) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $this->errors
+            ]);
+        }
+
+        $order->status = 'rejected';
+        $order->save();
+        $order->refresh();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order was marked as rejected successfully',
+            'data' => $order
+        ]);
+    }
+
+    /**
+     * Finish order
+     */
+    public function finish(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
+        ]);
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $clientId = Client::where('user_id', $request->user()->id)->value('id');
+        $order = Order::with('orderItems.product')
+            ->where('id', $request->order_id)
+            ->where('client_id', $clientId)
+            ->first();
+        if (!$order) {
+            // Validate if order belong to client
+            $this->errors['order'] = [
+                'client' => 'Client does not have an order with the given ID.'
+            ];
+        } elseif ($order->status === 'new' || $order->status === 'rejected' || $order->status === 'finished') {
+            // Validate if order status can be accepted
+            $this->errors['order'] = [
+                'status' => 'Status ' . $order->status . 'can not be marked as finished.'
+            ];
+        }
+
+        if ($this->errors) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => $this->errors
+            ]);
+        }
+
+        $order->status = 'finished';
+        $order->save();
+        $order->refresh();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Order was marked as finished successfully',
             'data' => $order
         ]);
     }
