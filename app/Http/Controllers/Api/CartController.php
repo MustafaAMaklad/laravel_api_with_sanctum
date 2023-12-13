@@ -35,7 +35,7 @@ class CartController extends Controller
         // Get required models
         $product = Product::find($request->product_id);
         $clientId = Client::where('user_id', $request->user()->id)->value('id');
-        $cart = Cart::fetchCartOrCreate($clientId);
+        $cart = Cart::getCartOrCreate($clientId);
         // Custom validation
         $errors = [];
         // Validate if product's store from a different city

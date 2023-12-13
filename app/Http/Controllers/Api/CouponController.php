@@ -182,10 +182,24 @@ class CouponController extends Controller
             ]);
         }
 
-        $coupon = Coupon::where('code', $request->coupon_id)->first();
-        $errors = [];
+        $coupon = Coupon::where('code', $request->coupon_code)->first();
+
         // Validate usage number
-        $coupon->usage_number === 0;
+        if ($coupon->usage_number) {
+
+            return response()->json([
+                'status' => false,
+                'errors' => [
+                    'coupon' => 'Coupon is unavailabe to be used.'
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Coupon is available.',
+            'data' => $coupon
+        ]);
     }
 }
 

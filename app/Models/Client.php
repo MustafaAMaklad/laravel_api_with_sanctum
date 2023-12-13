@@ -11,7 +11,9 @@ class Client extends Model
 {
     use HasFactory;
 
-
+    /**
+     * Append full name attribute to client model
+     */
     protected $appends = [
         'full_name',
     ];

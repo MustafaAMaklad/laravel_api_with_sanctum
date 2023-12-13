@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthStoreController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/public/upload', [UploadController::class, 'upload']);
 Route::post('/products/show', [ProductController::class, 'show']);
 Route::post('/product/show', [ProductController::class, 'showDetails']);
+Route::post('/coupon/check', [CouponController::class, 'check']);
 // Auth
 Route::post('/store/auth/register', [AuthStoreController::class, 'register']);
 Route::post('/store/auth/login', [AuthStoreController::class, 'login']);
@@ -69,5 +71,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/cart/remove/all', [CartController::class, 'removeAllFromCart']);
         Route::post('/cart/update', [CartController::class, 'updateInCart']);
         Route::get('/cart/show', [CartController::class, 'showCart']);
+        Route::post('/order/make', [OrderController::class, 'make']);
     });
 });
