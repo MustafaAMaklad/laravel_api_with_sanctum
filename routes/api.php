@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UploadController;
+use App\Http\Controllers\Api\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,19 +59,30 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/admin/products/show', [ProductController::class, 'index']);
     });
     Route::group(['middleware' => ['store']], function () {
+        // Authentication
         Route::post('/store/auth/logout', [AuthStoreController::class, 'logout']);
+        // Product
         Route::post('/store/product/create', [ProductController::class, 'store']);
         Route::get('/store/products/show', [ProductController::class, 'showForStore']);
         Route::post('/store/product/update', [ProductController::class, 'update']);
         Route::delete('/store/product/delete', [ProductController::class, 'destroy']);
+        // Order
+        Route::post('/order/manage', [OrderController::class, 'manage']);
     });
     Route::group(['middleware' => ['client']], function () {
+        // Authentication
         Route::post('/client/auth/logout', [AuthController::class, 'logout']);
+        // Cart
         Route::post('/cart/add', [CartController::class, 'addToCart']);
         Route::post('/cart/remove', [CartController::class, 'removeFromCart']);
         Route::post('/cart/remove/all', [CartController::class, 'removeAllFromCart']);
         Route::post('/cart/update', [CartController::class, 'updateInCart']);
         Route::get('/cart/show', [CartController::class, 'showCart']);
+        // Wishlist
+        Route::get('/wishlist/show', [WishlistController::class, 'show']);
+        Route::post('/wishlist/update', [WishlistController::class, 'wish']);
+        // Order
         Route::post('/order/make', [OrderController::class, 'make']);
+        Route::post('/order/finish', [OrderController::class, 'finish']);
     });
 });

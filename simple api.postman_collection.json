@@ -28,7 +28,7 @@
 									"formdata": [
 										{
 											"key": "email",
-											"value": "cummings.wyatt@example.net",
+											"value": "cassin.jerod@example.com",
 											"type": "text"
 										},
 										{
@@ -39,13 +39,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/client/login",
+									"raw": "{{localhost}}/api/client/auth/login",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"client",
+										"auth",
 										"login"
 									]
 								}
@@ -86,24 +87,30 @@
 										},
 										{
 											"key": "password",
-											"value": "123456",
+											"value": "Iam12345!",
 											"type": "text"
 										},
 										{
 											"key": "password_confirmation",
-											"value": "123456",
+											"value": "Iam12345!",
+											"type": "text"
+										},
+										{
+											"key": "city_id",
+											"value": "3",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/client/register",
+									"raw": "{{localhost}}/api/client/auth/register",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"client",
+										"auth",
 										"register"
 									]
 								}
@@ -126,7 +133,7 @@
 									"formdata": [
 										{
 											"key": "email",
-											"value": "aida.tillman@example.net",
+											"value": "arnoldo86@example.net",
 											"type": "text"
 										},
 										{
@@ -137,13 +144,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/store/login",
+									"raw": "{{localhost}}/api/store/auth/login",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"store",
+										"auth",
 										"login"
 									]
 								}
@@ -161,41 +169,158 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "S CAR",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "scar@mail.info",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Iam12345!",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "Iam12345!",
+											"type": "text"
+										},
+										{
+											"key": "commercial_number",
+											"value": "01214376499",
+											"type": "text"
+										},
+										{
+											"key": "city_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "commercial_images[0]",
+											"value": "public/uploads/12-2023/file_FQyLwRvRu6_1701945865.jpg",
+											"type": "text"
+										},
+										{
+											"key": "commercial_images[1]",
+											"value": "public/uploads/12-2023/file_FQyLwRvRu6_1701945865.jpg",
+											"type": "text"
+										}
+									]
+								},
 								"url": {
-									"raw": "{{localhost}}/api/store/register",
+									"raw": "{{localhost}}/api/store/auth/register",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"store",
+										"auth",
 										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login admin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "mustafa@admin.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/login",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"login"
 									]
 								}
 							},
 							"response": []
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "client",
-			"item": [
+				},
 				{
-					"name": "logout client",
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"accept": true
+					"name": "upload files",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[0]",
+									"type": "file",
+									"src": "/C:/Users/Carnival/Downloads/Ghibli Inspired Car Wallpaper.jpg"
+								},
+								{
+									"key": "files[0]",
+									"type": "file",
+									"src": "/C:/Users/Carnival/Downloads/R230211E.pdf",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/public/upload",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"public",
+								"upload"
+							]
 						}
 					},
+					"response": []
+				},
+				{
+					"name": "show products",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "",
+									"value": "{{client_api_access_token_city_5}}",
 									"type": "string"
 								}
 							]
@@ -208,25 +333,114 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "city_id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{localhost}}/api/client/logout",
+							"raw": "{{localhost}}/api/products/show",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
-								"client",
-								"logout"
+								"products",
+								"show"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "5",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "show products",
+					"name": "show product details",
 					"request": {
-						"method": "GET",
-						"header": []
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{client_api_access_token_city_5}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "product_id",
+									"value": "26",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/product/show",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"product",
+								"show"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "coupon_code",
+									"value": "AFCD1248",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{localhost}}/api/coupon/check",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"api",
+								"coupon",
+								"check"
+							]
+						}
 					},
 					"response": []
 				}
@@ -260,7 +474,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{localhost}}/api/admin/show/users?status=active&sortbydate=desc",
+									"raw": "{{localhost}}/api/admin/show/users?role=store",
 									"host": [
 										"{{localhost}}"
 									],
@@ -273,12 +487,12 @@
 									"query": [
 										{
 											"key": "role",
-											"value": "client",
-											"disabled": true
+											"value": "store"
 										},
 										{
 											"key": "status",
-											"value": "active"
+											"value": "active",
+											"disabled": true
 										},
 										{
 											"key": "sortbyname",
@@ -287,7 +501,8 @@
 										},
 										{
 											"key": "sortbydate",
-											"value": "desc"
+											"value": "desc",
+											"disabled": true
 										}
 									]
 								}
@@ -323,7 +538,7 @@
 									"urlencoded": [
 										{
 											"key": "user_id",
-											"value": "7",
+											"value": "64",
 											"type": "text"
 										},
 										{
@@ -385,30 +600,30 @@
 									"formdata": [
 										{
 											"key": "code",
-											"value": "AFZD1247",
+											"value": "NSEF1298",
 											"type": "text"
 										},
 										{
 											"key": "usage_number",
-											"value": "50",
+											"value": "200",
 											"type": "text"
 										},
 										{
 											"key": "discount_percent",
-											"value": "0.70",
+											"value": "20",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/admin/copon/create",
+									"raw": "{{localhost}}/api/admin/coupon/create",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"admin",
-										"copon",
+										"coupon",
 										"create"
 									]
 								}
@@ -447,14 +662,14 @@
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/admin/copon/delete",
+									"raw": "{{localhost}}/api/admin/coupon/delete",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"admin",
-										"copon",
+										"coupon",
 										"delete"
 									]
 								}
@@ -486,35 +701,39 @@
 									"mode": "formdata",
 									"formdata": [
 										{
+											"key": "coupon_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
 											"key": "code",
-											"value": "",
+											"value": "        ",
 											"type": "text",
 											"disabled": true
 										},
 										{
 											"key": "usage_number",
-											"value": "200",
+											"value": "1",
 											"type": "text"
 										},
 										{
 											"key": "discount_percent",
-											"value": "f",
+											"value": "11",
 											"type": "text",
 											"disabled": true
 										}
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/admin/copon/update/2",
+									"raw": "{{localhost}}/api/admin/coupon/update",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"admin",
-										"copon",
-										"update",
-										"2"
+										"coupon",
+										"update"
 									]
 								}
 							},
@@ -542,21 +761,20 @@
 									}
 								],
 								"url": {
-									"raw": "{{localhost}}/api/admin/copon/show",
+									"raw": "{{localhost}}/api/admin/coupon/show?coupon_id=4",
 									"host": [
 										"{{localhost}}"
 									],
 									"path": [
 										"api",
 										"admin",
-										"copon",
+										"coupon",
 										"show"
 									],
 									"query": [
 										{
 											"key": "coupon_id",
-											"value": "2",
-											"disabled": true
+											"value": "4"
 										}
 									]
 								}
@@ -566,44 +784,225 @@
 					]
 				},
 				{
-					"name": "login admin",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "email",
-									"value": "mustafa@admin.com",
-									"type": "text"
+					"name": "category",
+					"item": [
+						{
+							"name": "show category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "text"
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/admin/category/show?category_id=2",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"category",
+										"show"
+									],
+									"query": [
+										{
+											"key": "category_id",
+											"value": "2"
+										}
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{localhost}}/api/admin/login",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"admin",
-								"login"
-							]
+						{
+							"name": "show all categories",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/admin/category/index",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"category",
+										"index"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "category_name_en",
+											"value": "Vehicles",
+											"type": "text"
+										},
+										{
+											"key": "category_name_ar",
+											"value": "مركبات",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/category/create",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"category",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "category_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "category_name_en",
+											"value": "Food",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "category_name_ar",
+											"value": "'>??>",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/category/update",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"category",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "category_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/admin/category/delete",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"admin",
+										"category",
+										"delete"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
 					"name": "logout admin",
@@ -647,17 +1046,455 @@
 			]
 		},
 		{
-			"name": "store",
+			"name": "client",
 			"item": [
 				{
-					"name": "create product",
+					"name": "cart",
+					"item": [
+						{
+							"name": "add to cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "26",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/cart/add",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show cart",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "25",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/cart/show",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"show"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update cart item quantity",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "item_id",
+											"value": "57",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/cart/update",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove all from cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{localhost}}/api/cart/remove/all",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"remove",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove one from cart",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "item_id",
+											"value": "50",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/cart/remove",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"cart",
+										"remove"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "make order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "coupon_id",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/order/make",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"make"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "finish order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "order_id",
+											"value": "27",
+											"type": "text"
+										},
+										{
+											"key": "rating",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "comment",
+											"value": "good stuff",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/order/finish",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"finish"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "wishlist",
+					"item": [
+						{
+							"name": "add or remove from wishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/wishlist/update",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"wishlist",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show wishlist",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{client_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/wishlist/show",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"wishlist",
+										"show"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "logout client",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{store_api_access_token}}",
+									"value": "12|RRgqDaAqRCWE6YPpKrSihylYlW0mtmFOBnEjLgWNbb4d25be",
 									"type": "string"
 								}
 							]
@@ -670,147 +1507,346 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "Dell",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "slug",
-									"value": "dell",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "description",
-									"value": "This is dell",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "price",
-									"value": "999.98",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "ertet",
-									"value": "rtertey",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						},
 						"url": {
-							"raw": "{{localhost}}/api/store/product",
+							"raw": "{{localhost}}/api/client/auth/logout",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
-								"store",
-								"product"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Mac",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "logout store",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{localhost}}/api/store/logout",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"store",
+								"client",
+								"auth",
 								"logout"
 							]
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "store",
+			"item": [
 				{
-					"name": "update product",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{simple_auth_token}}",
-									"type": "string"
+					"name": "products",
+					"item": [
+						{
+							"name": "add product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "30|gK8tJ8f49YrIhNCAi3b2uC5C2hL5NkBoAEXpH029ca9e0f04",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_name_en",
+											"value": "Tomatoes",
+											"type": "text"
+										},
+										{
+											"key": "product_name_ar",
+											"value": "طماطم",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Red Tomatoes",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "750",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "public\\uploads\\12-2023\\file_FQyLwRvRu6_1701945865.jpg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/store/product/create",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"product",
+										"create"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "price",
-									"value": "99.70",
-									"type": "text"
+						{
+							"name": "update product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{store_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "25",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "price",
+											"value": "1000",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "quantity",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "product_name_en",
+											"value": "Scoda",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "product_name_ar",
+											"value": "سكودا",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "A Scoda Car",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/store/product/update",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"product",
+										"update"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{localhost}}/api/store/product/2",
-							"host": [
-								"{{localhost}}"
-							],
-							"path": [
-								"api",
-								"store",
-								"product",
-								"2"
-							]
+						{
+							"name": "show products",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{store_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{localhost}}/api/store/products/show",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"products",
+										"show"
+									],
+									"query": [
+										{
+											"key": "product_id",
+											"value": "21",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{scar_store_api_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "product_id",
+											"value": "23",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/store/product/delete",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"store",
+										"product",
+										"delete"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "delete product",
+					"name": "order",
+					"item": [
+						{
+							"name": "manage order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{store_api_access_token_city_5}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "order_id",
+											"value": "27",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "accepted",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{localhost}}/api/order/manage",
+									"host": [
+										"{{localhost}}"
+									],
+									"path": [
+										"api",
+										"order",
+										"manage"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "logout store",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{simple_auth_token}}",
+									"value": "19|mcdNeNk0bvuyRc45gtHqzcVVbSzLjvnkqqEthkUHc395f13f",
 									"type": "string"
 								}
 							]
 						},
-						"method": "DELETE",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Accept",
@@ -819,15 +1855,15 @@
 							}
 						],
 						"url": {
-							"raw": "{{localhost}}/api/store/product/1",
+							"raw": "{{localhost}}/api/store/auth/logout",
 							"host": [
 								"{{localhost}}"
 							],
 							"path": [
 								"api",
 								"store",
-								"product",
-								"1"
+								"auth",
+								"logout"
 							]
 						}
 					},

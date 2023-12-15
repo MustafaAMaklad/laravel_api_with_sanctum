@@ -55,7 +55,7 @@ class Cart extends Model
     /**
      * Fetch cart or create cart if it does not exist
      */
-    public static function getCartOrCreate(string $clientId) : Cart
+    public static function findOrCreate(string $clientId) : Cart
     {
         $cart = Cart::where('client_id', $clientId)->first();
 

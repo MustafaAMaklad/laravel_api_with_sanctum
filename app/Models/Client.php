@@ -17,10 +17,10 @@ class Client extends Model
     protected $appends = [
         'full_name',
     ];
-    public function city(): HasOne
-    {
-        return $this->hasOne(City::class);
-    }
+
+    /**
+     * Set full name accessor
+     */
     protected function fullName(): Attribute
     {
         return Attribute::make(
