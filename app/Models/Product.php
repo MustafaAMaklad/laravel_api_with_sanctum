@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class Product extends Model
 {
@@ -18,6 +16,7 @@ class Product extends Model
      * Append attributes to product model
      */
     protected $appends = [
+        'name',
         'image_path',
         'in_wishlist',
         'in_cart'
@@ -48,6 +47,9 @@ class Product extends Model
             get: fn () => url($this->image),
         );
     }
+    /**
+     * Set in wishlist accessor
+     */
     protected function inWishlist(): Attribute
     {
         return Attribute::make(
@@ -67,6 +69,9 @@ class Product extends Model
             },
         );
     }
+    /**
+     * Set in cart accessor
+     */
     protected function inCart(): Attribute
     {
         return Attribute::make(
@@ -85,6 +90,15 @@ class Product extends Model
                     }
                 }
             },
+        );
+    }
+    /**
+     * Set name accessor
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => request()->header('lang') === 'ar' ? $this->name_ar : $this->name_en,
         );
     }
 }
