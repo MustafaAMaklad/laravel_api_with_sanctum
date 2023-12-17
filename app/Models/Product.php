@@ -65,6 +65,8 @@ class Product extends Model
                             return false;
                         }
                     }
+                } else {
+                    return false;
                 }
             },
         );
@@ -88,6 +90,8 @@ class Product extends Model
                             return false;
                         }
                     }
+                } else {
+                    return false;
                 }
             },
         );
@@ -98,7 +102,7 @@ class Product extends Model
     protected function name(): Attribute
     {
         return Attribute::make(
-            get: fn () => request()->header('lang') === 'ar' ? $this->name_ar : $this->name_en,
+            get: fn () => $this->{'name_' . app()->getLocale()},
         );
     }
 }

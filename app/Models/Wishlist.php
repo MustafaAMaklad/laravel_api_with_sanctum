@@ -34,10 +34,10 @@ class Wishlist extends Model
      */
     public static function getIfExistsOrNull(string $clientId): array | null
     {
-        $Wishlist = Wishlist::with('product')
+        $Wishlist = Wishlist::with('product.category')
         ->where('client_id', $clientId)
         ->get()->toArray();
 
-        return null ? empty($Wishlist) : $Wishlist;
+        return   empty($Wishlist)? null : $Wishlist;
     }
 }

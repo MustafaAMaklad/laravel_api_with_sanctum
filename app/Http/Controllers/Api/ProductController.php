@@ -18,7 +18,7 @@ class ProductController extends Controller
         $products = Product::with(['store', 'category'])->get();
         return response()->json([
             'status' => true,
-            'message' => 'All products.',
+            'message' => __('messages.product_show_all'),
             'data' => $products
         ]);
     }
@@ -61,7 +61,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Product was created successfully.',
+            'message' => __('messages.product_create_success'),
             'data' => $product
         ]);
     }
@@ -98,7 +98,7 @@ class ProductController extends Controller
             $products = $products->get();
             return response()->json([
                 'status' => true,
-                'message' => 'All products.',
+                'message' => __('messages.product_show_all'),
                 'data' => $products
             ]);
         }
@@ -117,7 +117,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Show filtered products',
+            'message' => __('messages.product_show'),
             'data' => $products
         ]);
     }
@@ -147,7 +147,7 @@ class ProductController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Show all store\'s products.',
+                'message' => __('messages.product_show'),
                 'data' => $products
             ]);
         }
@@ -155,7 +155,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Show store\'s product.',
+            'message' => __('messages.product_show_one'),
             'data' => $products
         ]);
     }
@@ -180,7 +180,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Show product\'s details.',
+            'message' => __('messages.product_show_details'),
             'data' => $products
         ]);
     }
@@ -232,7 +232,7 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => $product->wasChanged() ? 'Product was updated successfully.' : 'Product was not updated.',
+            'message' => $product->wasChanged() ? __('messages.product_update_success') : __('messages.product_update_fail'),
             'data' => $product
         ]);
     }
@@ -255,7 +255,7 @@ class ProductController extends Controller
         if ($isDeleted) {
             return response()->json([
                 'status' => $isDeleted,
-                'message' => $isDeleted ? 'Product was deleted successfully.' : 'Store does not have a product with the given ID',
+                'message' => $isDeleted ? __('messages.product_delete_success') : __('messages.product_delete_fail'),
                 'data' => null
             ]);
         }
